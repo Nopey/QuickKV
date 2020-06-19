@@ -11,7 +11,12 @@ char* ReadFile(const char* path, int& len)
 {
 
 	FILE* f;
-	fopen_s(&f, path, "rb");
+	// fopen_s(&f, path, "rb");
+	if(!(f = fopen(path, "rb"))){
+		char *str = (char*) malloc(1);
+		*str = '\0';
+		return str;
+	}
 	fseek(f, 0, SEEK_END);
 	len = ftell(f);
 	rewind(f);
@@ -69,7 +74,7 @@ int main(int argc, char* argv[])
 	int parseTotalTime = 0;
 	int deleteTotalTime = 0;
 	clock_t t;
-	int count = 10000;
+	int count = 1;
 	std::cout.flush();
 	for (int i = 0; i < count; i++)
 	{
@@ -93,5 +98,6 @@ int main(int argc, char* argv[])
 	std::cout << (((float)parseTotalTime) / count) << " clock() ticks to parse\n\n";
 
 	std::cout << (((float)deleteTotalTime) / count) << " clock() ticks to delete\n";
+	std::cout << "(This system has " << CLOCKS_PER_SEC << " CLOCKS_PER_SEC)\n";
 
 }
